@@ -1,0 +1,1 @@
+# django_vacation_project_jb
