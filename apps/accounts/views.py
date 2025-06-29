@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from .forms import UserCreationForm, UserChangeForm
 
+# Create your views here.
+
 
 class SignUpView(CreateView):
     form_class = UserCreationForm
