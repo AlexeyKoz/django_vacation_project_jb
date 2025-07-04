@@ -1,16 +1,27 @@
 import psycopg2
-from datetime import datetime
-
 
 conn = psycopg2.connect(
-    dbname="project_db",
-    user="postgres",
-    password="1234",
+    dbname="your_db_name",
+    user="your_user",
+    password="your_password",
     host="localhost",
     port="5432"
 )
 cur = conn.cursor()
 
+cur.execute("""
+CREATE TABLE IF NOT EXISTS vacations (
+    id INTEGER PRIMARY KEY,
+    description TEXT,
+    start_date DATE,
+    end_date DATE,
+    price NUMERIC,
+    image TEXT,
+    created_at TIMESTAMPTZ,
+    updated_at TIMESTAMPTZ,
+    tour_id INTEGER
+);
+""")
 
 vacations = [
     (1, "Experience the magic of Paris with its iconic Eiffel Tower, world-class museums, and charming cafes. Enjoy the romantic atmosphere and rich cultural heritage.", "2025-06-12", "2025-06-21", 3630.00, "vacations/france.jpg", "2025-06-12 16:50:18.001147+00:00", "2025-06-12 16:50:18.541694+00:00", 1),
@@ -25,7 +36,6 @@ vacations = [
     (15, "Explore Berlin with its rich history, vibrant art scene, and diverse cultural attractions. Perfect for history and culture enthusiasts.", "2026-08-06", "2026-08-16", 9441.00, "vacations/germany.jpg", "2025-06-12 16:50:29.197783+00:00", "2025-06-12 16:50:30.529206+00:00", 15)
 ]
 
-
 insert_query = """
 INSERT INTO vacations (
     id, description, start_date, end_date, price, image, created_at, updated_at, tour_id
@@ -34,15 +44,10 @@ INSERT INTO vacations (
 );
 """
 
-
 for vacation in vacations:
     cur.execute(insert_query, vacation)
 
-
 conn.commit()
-
-
 cur.close()
 conn.close()
-
-print("Data inserted successfully into the vacations table.")
+print("Vacations table populated successfully.")
