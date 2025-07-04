@@ -29,7 +29,7 @@ A Django-based web application for planning and managing vacations.
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/AlexeyKoz/django_vacation_project_jb.git
 cd vacation-planner
 ```
 
@@ -89,16 +89,6 @@ python manage.py runserver
 ```
 
 2. Visit http://127.0.0.1:8000/ in your browser
-
-## Default Users
-
-- Admin User:
-  - Email: admin@example.com
-  - Password: admin1234
-
-- Regular User:
-  - Email: user@example.com
-  - Password: user1234
 
 ## Running Tests
 
