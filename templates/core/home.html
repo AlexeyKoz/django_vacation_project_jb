@@ -60,15 +60,21 @@
                         <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
                     </div>
                     {% endif %}
-                    {% if user.is_authenticated %}
-                    <button class="btn btn-sm position-absolute top-0 end-0 m-2 like-button"
-                        data-vacation-id="{{ vacation.id }}"
-                        data-liked="{% if vacation.is_liked %}true{% else %}false{% endif %}"
-                        data-url="{% url 'vacations:vacation_like' vacation.id %}">
-                        <i class="bi bi-heart{% if vacation.is_liked %}-fill text-danger{% endif %}"></i>
-                        <span class="badge bg-light text-dark">{{ vacation.likes_count }}</span>
-                    </button>
-                    {% endif %}
+                    <div class="position-absolute top-0 end-0 m-2">
+                        {% if user.is_authenticated %}
+                        <button class="btn btn-sm like-button" data-vacation-id="{{ vacation.id }}"
+                            data-liked="{% if vacation.is_liked %}true{% else %}false{% endif %}"
+                            data-url="{% url 'vacations:vacation_like' vacation.id %}">
+                            <i class="bi bi-heart{% if vacation.is_liked %}-fill text-danger{% endif %}"></i>
+                            <span class="badge bg-light text-dark">{{ vacation.likes_count }}</span>
+                        </button>
+                        {% else %}
+                        <button class="btn btn-sm like-button" type="button" disabled title="Sign in to like vacations">
+                            <i class="bi bi-heart"></i>
+                            <span class="badge bg-light text-dark">{{ vacation.likes_count }}</span>
+                        </button>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">{{ vacation.country.name }}</h5>

@@ -54,6 +54,13 @@
                         <span class="badge bg-light text-dark ms-2">{{ vacation.likes.count }}</span>
                     </button>
                 </form>
+                {% else %}
+                <button class="btn btn-outline-danger" type="button" disabled title="Sign in to like vacations">
+                    <i class="bi bi-heart me-2"></i>
+                    Like
+                    <span class="badge bg-light text-dark ms-2">{{ vacation.likes.count }}</span>
+                </button>
+                {% endif %}
                 {% if user.is_staff %}
                 <a href="{% url 'vacations:vacation_update' vacation.id %}" class="btn btn-outline-primary">
                     <i class="bi bi-pencil me-2"></i>Edit
@@ -61,7 +68,6 @@
                 <a href="{% url 'vacations:vacation_delete' vacation.id %}" class="btn btn-outline-danger">
                     <i class="bi bi-trash me-2"></i>Delete
                 </a>
-                {% endif %}
                 <a href="{% url 'vacations:coming_soon' %}" class="btn btn-success">
                     <i class="bi bi-calendar-check me-2"></i>Reserve Vacation
                 </a>
