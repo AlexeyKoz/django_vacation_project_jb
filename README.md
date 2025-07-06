@@ -34,13 +34,13 @@ cd django_vacation_project_jb
 ```
 
 2. Create and activate a virtual environment:
-```bash
+```PowerShell
 python -m venv venv
 venv\Scripts\activate
 ```
 
 3. Install dependencies:
-```bash
+```PowerShell
 pip install -r requirements.txt
 ```
 
@@ -56,18 +56,18 @@ DB_PORT=5432
 ```
 
 5. Create the database:
-```bash
-createdb project_db
+```PowerShell
+python project_db
 ```
 
 6. Run migrations:
-```bash
+```PowerShell
 python manage.py migrate
 ```
 
 
 7. Populate the database with initial data:
-```bash
+```PowerShell
 python manage.py populate_db
 ```
 
@@ -76,7 +76,7 @@ python manage.py populate_db
 ## Running the Application
 
 1. Start the development server:
-```bash
+```PowerShell
 python manage.py runserver
 ```
 
@@ -84,6 +84,6 @@ python manage.py runserver
 
 ## Running Tests
 
-```bash
+```PowerShell
 python manage.py test
 ```
