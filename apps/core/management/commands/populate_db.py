@@ -7,93 +7,95 @@ from django.utils import timezone
 from datetime import timedelta
 import random
 import os
-from django.core.files import File
-import requests
-from tempfile import NamedTemporaryFile
+import shutil
 from pathlib import Path
+from django.conf import settings
+from django.core.files import File
 
 User = get_user_model()
 
-# List of vacation data with country, description, and image URL.
+# List of vacation data with country, description, and local image filename.
 VACATION_DATA = [
     {
         'country': 'France',
         'description': 'Experience the magic of Paris with its iconic Eiffel Tower, world-class museums, and charming cafes. Enjoy the romantic atmosphere and rich cultural heritage.',
-        'image_url': 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800'
+        'image_filename': 'france.jpg'
     },
     {
         'country': 'Italy',
         'description': 'Discover the eternal city of Rome with its ancient ruins, Vatican City, and delicious Italian cuisine. Immerse yourself in history and art.',
-        'image_url': 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=800'
+        'image_filename': 'italy.jpg'
     },
     {
         'country': 'Spain',
         'description': 'Enjoy the vibrant city of Barcelona with its unique architecture, beautiful beaches, and lively atmosphere. Perfect for art lovers and food enthusiasts.',
-        'image_url': 'https://images.unsplash.com/photo-1583422409516-2895a77efded?w=800'
+        'image_filename': 'spain.jpg'
     },
     {
         'country': 'Greece',
         'description': 'Visit the stunning Santorini with its white-washed buildings, blue domes, and breathtaking sunsets. A perfect romantic getaway.',
-        'image_url': 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=800'
+        'image_filename': 'greece.jpg'
     },
     {
         'country': 'Japan',
         'description': 'Explore Tokyo, a fascinating blend of traditional culture and cutting-edge technology. Experience unique cuisine and vibrant city life.',
-        'image_url': 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800'
+        'image_filename': 'japan.jpg'
     },
     {
         'country': 'Thailand',
         'description': 'Relax in Phuket with its pristine beaches, crystal-clear waters, and luxurious resorts. Perfect for beach lovers and water sports enthusiasts.',
-        'image_url': 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?w=800'
+        'image_filename': 'thailand.jpg'
     },
     {
         'country': 'Australia',
         'description': 'Discover Sydney with its iconic Opera House, beautiful harbor, and stunning beaches. Experience the perfect blend of city and nature.',
-        'image_url': 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800'
+        'image_filename': 'australia.jpg'
     },
     {
         'country': 'United States',
         'description': 'Visit New York City, the city that never sleeps. Experience world-famous landmarks, Broadway shows, and diverse cultural attractions.',
-        'image_url': 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800'
+        'image_filename': 'united_states.jpg'
     },
     {
         'country': 'Canada',
         'description': 'Explore Vancouver with its stunning natural beauty, diverse culture, and outdoor activities. Perfect for nature lovers and adventure seekers.',
-        'image_url': 'https://images.unsplash.com/photo-1474181487882-5abf3f0ba6c2?w=800'
+        'image_filename': 'canada.jpg'
     },
     {
         'country': 'Brazil',
         'description': 'Experience Rio de Janeiro with its famous beaches, vibrant culture, and iconic Christ the Redeemer statue. A perfect mix of nature and city life.',
-        'image_url': 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?w=800'
+        'image_filename': 'brazil.jpg'
     },
     {
         'country': 'South Africa',
         'description': 'Visit Cape Town with its stunning Table Mountain, beautiful beaches, and rich cultural heritage. Perfect for nature and adventure lovers.',
-        'image_url': 'https://plus.unsplash.com/premium_photo-1697730061063-ad499e343f26?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+        'image_filename': 'south_africa.jpg'
     },
     {
         'country': 'Egypt',
         'description': 'Discover Cairo with its ancient pyramids, rich history, and vibrant culture. A perfect destination for history enthusiasts.',
-        'image_url': 'https://plus.unsplash.com/premium_photo-1664303467567-17891a27998a?q=80&w=1176&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+        'image_filename': 'egypt.jpg'
     },
     {
         'country': 'India',
         'description': 'Experience the magic of Jaipur with its stunning palaces, rich culture, and vibrant markets. Perfect for cultural exploration.',
-        'image_url': 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+        'image_filename': 'india.jpg'
     },
     {
         'country': 'United Kingdom',
         'description': 'Visit London with its iconic landmarks, rich history, and diverse cultural attractions. Perfect for history and culture lovers.',
-        'image_url': 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=800'
+        'image_filename': 'united_kingdom.jpg'
     },
     {
         'country': 'Germany',
         'description': 'Explore Berlin with its rich history, vibrant art scene, and diverse cultural attractions. Perfect for history and culture enthusiasts.',
-        'image_url': 'https://images.unsplash.com/photo-1599946347371-68eb71b16afc?w=800'
+        'image_filename': 'germany.jpg'
     }
 ]
 
 # Command to populate the database with initial data.
+
+
 class Command(BaseCommand):
     help = 'Populates the database with initial data (users, countries, vacations with images)'
 
@@ -110,7 +112,8 @@ class Command(BaseCommand):
                 'is_staff': True
             }
         )
-        self.stdout.write(self.style.SUCCESS('Admin user created or already exists'))
+        self.stdout.write(self.style.SUCCESS(
+            'Admin user created or already exists'))
 
         self.stdout.write('Creating regular user...')
         User.objects.get_or_create(
@@ -123,41 +126,59 @@ class Command(BaseCommand):
                 'is_staff': False
             }
         )
-        self.stdout.write(self.style.SUCCESS('Regular user created or already exists'))
+        self.stdout.write(self.style.SUCCESS(
+            'Regular user created or already exists'))
 
-        self.stdout.write('Creating vacations with images...')
-        media_dir = Path('media/vacations')
-        media_dir.mkdir(parents=True, exist_ok=True)
+        self.stdout.write('Creating vacations with local images...')
+
+        # Get the media root path
+        media_root = Path(settings.MEDIA_ROOT)
+        source_vacations_dir = media_root / 'vacations'
+
+        # Ensure the vacations directory exists
+        source_vacations_dir.mkdir(parents=True, exist_ok=True)
+
+        # Clear existing vacations to avoid conflicts
+        existing_vacations = Vacation.objects.all()
+        if existing_vacations.exists():
+            self.stdout.write('Clearing existing vacations...')
+            existing_vacations.delete()
+            self.stdout.write(self.style.SUCCESS('Existing vacations cleared'))
+
         start_date = timezone.now().date()
 
-        # Create vacation objects and assign images.
+        # Create vacation objects and assign local images.
         for i, data in enumerate(VACATION_DATA):
             try:
-                country, _ = Country.objects.get_or_create(name=data['country'])
+                country, _ = Country.objects.get_or_create(
+                    name=data['country'])
                 vacation_start = start_date + timedelta(days=i*30)
-                vacation_end = vacation_start + timedelta(days=random.randint(5, 14))
+                vacation_end = vacation_start + \
+                    timedelta(days=random.randint(5, 14))
                 price = random.randint(500, 9500)
+
+                # Check if the image file exists
+                source_image_path = source_vacations_dir / \
+                    data['image_filename']
+                if not source_image_path.exists():
+                    self.stdout.write(self.style.WARNING(
+                        f'Local image not found for {country.name}: {source_image_path}'))
+                    continue
+
                 vacation = Vacation.objects.create(
                     country=country,
                     description=data['description'],
                     start_date=vacation_start,
                     end_date=vacation_end,
-                    price=price
+                    price=price,
+                    image=f'vacations/{data["image_filename"]}'
                 )
-                response = requests.get(data['image_url'])
-                if response.status_code == 200:
-                    img_temp = NamedTemporaryFile(delete=True)
-                    img_temp.write(response.content)
-                    img_temp.flush()
-                    vacation.image.save(
-                        f"{country.name.lower().replace(' ', '_')}.jpg",
-                        File(img_temp),
-                        save=True
-                    )
-                    self.stdout.write(self.style.SUCCESS(f'Successfully created vacation to {country.name}'))
-                else:
-                    self.stdout.write(self.style.WARNING(f'Could not download image for {country.name}'))
-            except Exception as e:
-                self.stdout.write(self.style.ERROR(f'Error creating vacation for {data["country"]}: {str(e)}'))
 
-        self.stdout.write(self.style.SUCCESS('Database populated successfully'))
+                self.stdout.write(self.style.SUCCESS(
+                    f'Successfully created vacation to {country.name} with local image'))
+            except Exception as e:
+                self.stdout.write(self.style.ERROR(
+                    f'Error creating vacation for {data["country"]}: {str(e)}'))
+
+        self.stdout.write(self.style.SUCCESS(
+            'Database populated successfully'))

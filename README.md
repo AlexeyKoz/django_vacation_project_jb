@@ -30,7 +30,7 @@ A Django-based web application for planning and managing vacations.
 1. Clone the repository:
 ```bash
 git clone https://github.com/AlexeyKoz/django_vacation_project_jb.git
-cd vacation-planner
+cd django_vacation_project_jb
 ```
 
 2. Create and activate a virtual environment:
@@ -60,26 +60,18 @@ DB_PORT=5432
 createdb project_db
 ```
 
-6. Create migrations:
-```bash
-python manage.py makemigrations
-```
-
-
-7. Run migrations:
+6. Run migrations:
 ```bash
 python manage.py migrate
 ```
 
-8. Create necessary directories:
-```bash
-mkdir static media
-```
 
-9. Populate the database with initial data:
+7. Populate the database with initial data:
 ```bash
 python manage.py populate_db
 ```
+
+
 
 ## Running the Application
 
