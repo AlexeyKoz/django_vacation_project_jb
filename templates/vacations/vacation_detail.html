@@ -60,6 +60,19 @@
                         <span class="badge bg-light text-dark ms-2">{{ vacation.likes.count }}</span>
                     </button>
                 </form>
+                {% if user.is_staff %}
+                <!-- Edit and delete buttons for admin -->
+                <a href="{% url 'vacations:vacation_update' vacation.id %}" class="btn btn-outline-primary">
+                    <i class="bi bi-pencil me-2"></i>Edit
+                </a>
+                <a href="{% url 'vacations:vacation_delete' vacation.id %}" class="btn btn-outline-danger">
+                    <i class="bi bi-trash me-2"></i>Delete
+                </a>
+                {% endif %}
+                <!-- Reserve button for authenticated users -->
+                <a href="{% url 'vacations:coming_soon' %}" class="btn btn-success">
+                    <i class="bi bi-calendar-check me-2"></i>Reserve
+                </a>
                 {% else %}
                 <!-- Disabled like button for guests -->
                 <button class="btn btn-outline-danger" type="button" disabled title="Sign in to like vacations">
@@ -67,19 +80,6 @@
                     Like
                     <span class="badge bg-light text-dark ms-2">{{ vacation.likes.count }}</span>
                 </button>
-                {% endif %}
-                {% if user.is_staff %}
-                <!-- Edit, delete, and reserve buttons for admin -->
-                <a href="{% url 'vacations:vacation_update' vacation.id %}" class="btn btn-outline-primary">
-                    <i class="bi bi-pencil me-2"></i>Edit
-                </a>
-                <a href="{% url 'vacations:vacation_delete' vacation.id %}" class="btn btn-outline-danger">
-                    <i class="bi bi-trash me-2"></i>Delete
-                </a>
-                <a href="{% url 'vacations:coming_soon' %}" class="btn btn-success">
-                    <i class="bi bi-calendar-check me-2"></i>Reserve Vacation
-                </a>
-                {% else %}
                 <!-- Prompt to sign in for guests -->
                 <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary">
                     <i class="bi bi-box-arrow-in-right me-2"></i>Sign in to like

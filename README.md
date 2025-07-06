@@ -71,6 +71,11 @@ python manage.py migrate
 python manage.py populate_db
 ```
 
+8.Create superuser
+```PowerShell
+python manage.py createsuperuser
+```
+
 
 
 ## Running the Application
