@@ -1,8 +1,9 @@
+# Form for creating and validating vacations in the vacations app.
 from django import forms
 from django.utils import timezone
 from .models import Vacation
 
-
+# Form for the Vacation model.
 class VacationForm(forms.ModelForm):
     class Meta:
         model = Vacation
@@ -17,6 +18,7 @@ class VacationForm(forms.ModelForm):
             'image': forms.FileInput(attrs={'class': 'form-control'}),
         }
 
+    # Validate vacation form fields.
     def clean(self):
         cleaned_data = super().clean()
         start_date = cleaned_data.get('start_date')

@@ -1,3 +1,4 @@
+# Management command to populate the database with users, countries, and vacations (with images).
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from apps.core.models import Country
@@ -13,6 +14,7 @@ from pathlib import Path
 
 User = get_user_model()
 
+# List of vacation data with country, description, and image URL.
 VACATION_DATA = [
     {
         'country': 'France',
@@ -91,9 +93,11 @@ VACATION_DATA = [
     }
 ]
 
+# Command to populate the database with initial data.
 class Command(BaseCommand):
     help = 'Populates the database with initial data (users, countries, vacations with images)'
 
+    # Main entry point for the management command.
     def handle(self, *args, **kwargs):
         self.stdout.write('Creating admin user...')
         User.objects.get_or_create(
@@ -126,6 +130,7 @@ class Command(BaseCommand):
         media_dir.mkdir(parents=True, exist_ok=True)
         start_date = timezone.now().date()
 
+        # Create vacation objects and assign images.
         for i, data in enumerate(VACATION_DATA):
             try:
                 country, _ = Country.objects.get_or_create(name=data['country'])

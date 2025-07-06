@@ -1,3 +1,4 @@
+# Initial migration for the Country model in the core app.
 from django.db import migrations, models
 
 

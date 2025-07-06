@@ -1,3 +1,4 @@
+# Initial migration for the custom User model in the accounts app.
 from django.db import migrations, models
 
 

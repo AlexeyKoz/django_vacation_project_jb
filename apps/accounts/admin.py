@@ -1,8 +1,9 @@
+# Admin configuration for the accounts app.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User
 
-
+# Custom admin for the User model.
 @admin.register(User)
 class CustomUserAdmin(UserAdmin):
     model = User

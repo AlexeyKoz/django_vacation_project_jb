@@ -1,3 +1,4 @@
+<!-- User registration page: allows new users to create an account. -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,6 +35,7 @@
         <div class="register-form">
             <h2 class="text-center mb-4">Register</h2>
             {% if form.errors %}
+            <!-- Display form errors -->
             <div class="alert alert-danger">
                 {% for field, errors in form.errors.items %}
                 {% for error in errors %}
@@ -42,6 +44,7 @@
                 {% endfor %}
             </div>
             {% endif %}
+            <!-- Registration form for new users -->
             <form method="post" novalidate>
                 {% csrf_token %}
                 <div class="mb-3">
@@ -71,6 +74,7 @@
                     <button type="submit" class="btn btn-primary">Register</button>
                 </div>
             </form>
+            <!-- Link to login page for existing users -->
             <div class="text-center mt-3">
                 <p>Already have an account? <a href="{% url 'account_login' %}">Login here</a></p>
             </div>

@@ -1,9 +1,11 @@
+<!-- User login page: allows users to sign in to their account. -->
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}Login - Vacation Planner{% endblock %}
 
 {% block content %}
+<!-- Login form for user authentication -->
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -13,6 +15,7 @@
                     <form method="post">
                         {% csrf_token %}
                         {% for field in form %}
+                        <!-- Input field for {{ field.label }} -->
                         <div class="mb-3">
                             <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
                             {{ field.errors }}
@@ -23,6 +26,7 @@
                             <button type="submit" class="btn btn-primary">Login</button>
                         </div>
                     </form>
+                    <!-- Link to signup page for new users -->
                     <div class="text-center mt-4">
                         <p>Don't have an account? <a href="{% url 'accounts:signup' %}">Sign up</a></p>
                     </div>

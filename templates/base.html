@@ -1,3 +1,4 @@
+<!-- Base template: provides the main layout, navigation, and structure for all pages. -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,6 +44,7 @@
 </head>
 
 <body>
+    <!-- Navigation bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="{% url 'core:home' %}">Vacation Planner</a>
@@ -64,6 +66,7 @@
                     </li>
                     {% endif %}
                     <li class="nav-item">
+                        <!-- Sign out form -->
                         <form method="post" action="{% url 'accounts:logout' %}" style="display:inline;">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-outline-danger btn-sm ms-2">Sign Out</button>
@@ -82,10 +85,12 @@
         </div>
     </nav>
 
+    <!-- Main content area -->
     <div class="content">
         <div class="container">
             {% if messages %}
             {% for message in messages %}
+            <!-- Display Django messages -->
             <div class="alert alert-{{ message.tags }}">
                 {{ message }}
             </div>
@@ -97,6 +102,7 @@
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="footer">
         <div class="container text-center">
             <p class="mb-0">&copy; {% now "Y" %} Vacation Planner. All rights reserved.</p>

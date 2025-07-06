@@ -1,3 +1,4 @@
+# Initial migration for the Vacation and Like models in the vacations app.
 import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models

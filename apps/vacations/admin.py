@@ -1,7 +1,8 @@
+# Admin configuration for the vacations app.
 from django.contrib import admin
 from .models import Vacation, Like
 
-
+# Admin for the Vacation model.
 @admin.register(Vacation)
 class VacationAdmin(admin.ModelAdmin):
     list_display = ['country', 'start_date', 'end_date', 'price', 'likes_count']
@@ -14,7 +15,7 @@ class VacationAdmin(admin.ModelAdmin):
 
     likes_count.short_description = 'Likes'
 
-
+# Admin for the Like model.
 @admin.register(Like)
 class LikeAdmin(admin.ModelAdmin):
     list_display = ['user', 'vacation', 'created_at']

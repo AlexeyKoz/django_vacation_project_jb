@@ -1,16 +1,20 @@
+<!-- Vacation detail page: shows all information and actions for a single vacation. -->
 {% extends 'base.html' %}
 {% load static %}
 
 {% block title %}{{ vacation.country.name }} - Vacation Details{% endblock %}
 
 {% block content %}
+<!-- Vacation detail content -->
 <div class="container py-5">
     <div class="row">
         <!-- Vacation Image -->
         <div class="col-md-6 mb-4">
             {% if vacation.image %}
+            <!-- Display vacation image -->
             <img src="{{ vacation.image.url }}" class="img-fluid rounded shadow" alt="{{ vacation.country.name }}">
             {% else %}
+            <!-- Placeholder if no image -->
             <div class="bg-light rounded shadow d-flex align-items-center justify-content-center"
                 style="height: 400px;">
                 <i class="bi bi-image text-muted" style="font-size: 5rem;"></i>
@@ -43,8 +47,10 @@
                 <p>{{ vacation.description }}</p>
             </div>
 
+            <!-- Like, edit, delete, and reserve buttons -->
             <div class="d-flex gap-3 mb-4">
                 {% if user.is_authenticated %}
+                <!-- Like/unlike button for authenticated users -->
                 <form method="post" action="{% url 'vacations:vacation_like' vacation.id %}" class="d-inline">
                     {% csrf_token %}
                     <button type="submit"
@@ -55,6 +61,7 @@
                     </button>
                 </form>
                 {% else %}
+                <!-- Disabled like button for guests -->
                 <button class="btn btn-outline-danger" type="button" disabled title="Sign in to like vacations">
                     <i class="bi bi-heart me-2"></i>
                     Like
@@ -62,6 +69,7 @@
                 </button>
                 {% endif %}
                 {% if user.is_staff %}
+                <!-- Edit, delete, and reserve buttons for admin -->
                 <a href="{% url 'vacations:vacation_update' vacation.id %}" class="btn btn-outline-primary">
                     <i class="bi bi-pencil me-2"></i>Edit
                 </a>
@@ -72,6 +80,7 @@
                     <i class="bi bi-calendar-check me-2"></i>Reserve Vacation
                 </a>
                 {% else %}
+                <!-- Prompt to sign in for guests -->
                 <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary">
                     <i class="bi bi-box-arrow-in-right me-2"></i>Sign in to like
                 </a>
