@@ -14,6 +14,29 @@ from apps.core.serializers import CountrySerializer
 from .forms import VacationForm
 from django.contrib import messages
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+
+# ... existing code ...
+
+# View for deleting a vacation directly (admin only).
+@require_POST
+def vacation_delete_direct(request, pk):
+    # Only allow staff users to delete vacations
+    if not request.user.is_staff:
+        return JsonResponse({'status': 'error', 'message': 'Permission denied'}, status=403)
+    
+    vacation = get_object_or_404(Vacation, pk=pk)
+    vacation_name = vacation.country.name
+    vacation.delete()
+    
+    return JsonResponse({
+        'status': 'success', 
+        'message': f'"{vacation_name}" was deleted successfully'
+    })
+
+# ... existing code ...
 
 # Permission class to check if user is admin.
 class IsAdminUser(permissions.BasePermission):

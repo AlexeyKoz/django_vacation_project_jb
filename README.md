@@ -57,7 +57,7 @@ DB_PORT=5432
 
 5. Create the database:
 ```PowerShell
-python project_db
+python project_db.py
 ```
 
 6. Run migrations:

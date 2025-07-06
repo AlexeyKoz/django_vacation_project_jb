@@ -97,39 +97,11 @@ VACATION_DATA = [
 
 
 class Command(BaseCommand):
-    help = 'Populates the database with initial data (users, countries, vacations with images)'
+    help = 'Populates the database with initial data (countries, vacations)'
 
     # Main entry point for the management command.
     def handle(self, *args, **kwargs):
-        self.stdout.write('Creating admin user...')
-        User.objects.get_or_create(
-            email='admin@example.com',
-            defaults={
-                'password': 'admin1234',
-                'first_name': 'Admin',
-                'last_name': 'User',
-                'is_superuser': True,
-                'is_staff': True
-            }
-        )
-        self.stdout.write(self.style.SUCCESS(
-            'Admin user created or already exists'))
-
-        self.stdout.write('Creating regular user...')
-        User.objects.get_or_create(
-            email='user@example.com',
-            defaults={
-                'password': 'user1234',
-                'first_name': 'Regular',
-                'last_name': 'User',
-                'is_superuser': False,
-                'is_staff': False
-            }
-        )
-        self.stdout.write(self.style.SUCCESS(
-            'Regular user created or already exists'))
-
-        self.stdout.write('Creating vacations with local images...')
+        self.stdout.write('Creating vacations...')
 
         # Get the media root path
         media_root = Path(settings.MEDIA_ROOT)

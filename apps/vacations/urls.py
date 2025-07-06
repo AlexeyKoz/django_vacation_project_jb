@@ -12,6 +12,8 @@ urlpatterns = [
          name='vacation_update'),
     path('<int:pk>/delete/', views.VacationDeleteView.as_view(),
          name='vacation_delete'),
+    path('<int:pk>/delete-direct/', views.vacation_delete_direct,
+         name='vacation_delete_direct'),
     path('<int:pk>/like/', views.vacation_like, name='vacation_like'),
     path('coming-soon/', views.ComingSoonView.as_view(), name='coming_soon'),
 
