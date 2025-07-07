@@ -92,3 +92,9 @@ python manage.py runserver
 ```PowerShell
 python manage.py test
 ```
+
+
+
+## DONE!!
+
+## FYI: In Order to Create Vacations in New Countries One Must First add the Country in the Admin Page.
